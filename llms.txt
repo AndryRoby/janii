@@ -1,0 +1,35 @@
+# Janii
+
+> A free public-beta Windows app for wedding photographers. It reads a folder of RAW and JPEG photographs from a shoot, groups them into moments, and proposes the story (the best photographs that also cover the day) and the memories (the story plus enough more that nobody present is left out), with a stated reason for every frame. Runs entirely offline, on CPU only. Selection only for now: no straightening, cropping or colour grading yet.
+
+## What it does
+
+Point Janii at a folder of RAW and/or JPEG files from one wedding. It reads each photograph (without opening any of them for writing), groups frames taken close together in time and of the same thing into "moments", and measures each frame. From that it proposes two tiers: the story (a target-count, best-of-the-day set with no padding) and the memories (the story plus enough more that nobody who was actually there ends up with zero photographs). Every frame carries a reason chip: "send this one" (in the story), "your eyes" (too close to call), "already covered" (a near duplicate that lost), or "only shot once" (protected, the only capture of something). Nothing is ever copied, moved, renamed or deleted; everything Janii creates lives in one `.janii` folder next to the photographs. Delivery writes XMP sidecars (stars, colour labels, reject) that Lightroom, Bridge and Capture One read on import, or exports a new JPEG gallery, without ever opening the originals for writing.
+
+## What it does not do
+
+No straightening, cropping or colour grading: Janii measures colour but changes no pixel; finishing happens in your usual editor. Windows only, no macOS or Linux build. CPU only, no GPU path, so a first pass over a big wedding (several thousand RAW files) can take hours; there is no published benchmark yet. No face recognition yet: the detector and matcher both work in testing on permissively licensed models, but grouping photographs by person is held back on the legal question around identifying people (GDPR Article 9), not a technical one. It is a beta: it can be wrong, it can be slow, and the interface will keep changing.
+
+## Status
+
+Free public beta. The goal of this release is real feedback from wedding photographers. After the beta, a one-time licence is planned at 169 EUR, and the first ten photographers who send feedback during the beta get first offer on it.
+
+## Download
+
+- Windows (ZIP): https://github.com/AndryRoby/janii/releases/latest
+
+## Links
+
+- Landing page: https://arling.sk/janii/
+- Docs (step-by-step guide): https://arling.sk/janii/docs/
+- Full reference: https://arling.sk/janii/llms-full.txt
+- Releases: https://github.com/AndryRoby/janii/releases
+- Hub (more ARLing tools): https://arling.sk/
+
+## Privacy
+
+No account, no cloud, no network use at all. All reading and analysis happens on the device; photographs are never uploaded, copied, moved, renamed or deleted. Anonymous usage counts (page views, button clicks on the landing page, not photograph contents) are collected with a self-hosted Umami instance; the app itself does not phone home.
+
+## Contact
+
+Built by ARLing s. r. o., Bratislava, Slovakia. andrej@arling.sk

@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://homelab.tailbf8f27.ts.net; connect-src https://homelab.tailbf8f27.ts.net; img-src 'self' data:; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'none'; object-src 'none'">
+<title>Janii docs</title>
+<meta name="description" content="Step-by-step guide to Janii: unzip and run it, point it at a wedding folder, read the story and the memories it proposes, and hand off to Lightroom or a delivered gallery. Nine short chapters, real screenshots.">
+<link rel="canonical" href="https://arling.sk/janii/docs/">
+<link rel="alternate" hreflang="en" href="https://arling.sk/janii/docs/">
+<link rel="alternate" hreflang="x-default" href="https://arling.sk/janii/docs/">
+<meta property="og:title" content="Janii docs">
+<meta property="og:description" content="Step-by-step guide to Janii, in nine short chapters: install, point at a folder, read the results, hand off to Lightroom or a delivered gallery.">
+<meta property="og:url" content="https://arling.sk/janii/docs/">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://arling.sk/janii/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f6f2ea">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="manifest" href="../manifest.json">
+<link rel="alternate" type="text/plain" href="https://arling.sk/janii/llms.txt" title="llms.txt">
+<style>
+  :root {
+    --paper:#f6f2ea; --paper-2:#fbf9f4; --ink:#1b1a17; --ink-2:#4a4741; --muted:#7a766e; --line:#d9d2c4;
+    --accent:#b23a1d; --accent-soft:#f3e2dc; --ok:#2f6f3e;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"Cascadia Code",Consolas,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#151412; --paper-2:#1d1b18; --ink:#efe9de; --ink-2:#c9c2b5; --muted:#8f887b; --line:#2e2b26; --accent:#e0623f; --accent-soft:#3a1f17; --ok:#7fbf8e; }
+  }
+  * { box-sizing:border-box; min-width:0; }
+  html { background:var(--paper); scroll-behavior:smooth; }
+  body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.55 var(--sans); -webkit-font-smoothing:antialiased; overflow-wrap:anywhere; }
+  a { color:inherit; text-decoration-color:var(--line); text-underline-offset:3px; }
+  a:hover { text-decoration-color:var(--accent); }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  img { max-width:100%; height:auto; display:block; }
+  .skip { position:absolute; left:-999px; top:8px; background:var(--ink); color:var(--paper); padding:8px 12px; z-index:10; }
+  .skip:focus { left:8px; }
+  .wrap { max-width:1040px; margin:0 auto; padding:0 24px; }
+  header.top { border-bottom:1px solid var(--line); }
+  header.top .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:24px; padding:18px 24px; flex-wrap:wrap; }
+  .wordmark { font:600 22px/1 var(--serif); text-decoration:none; }
+  .wordmark small { font:13px/1 var(--sans); color:var(--muted); margin-left:10px; letter-spacing:.04em; }
+  nav.main { display:flex; align-items:baseline; gap:0; flex-wrap:wrap; }
+  nav.main a { font-size:14px; margin-left:20px; text-decoration:none; color:var(--ink-2); }
+  nav.main a:hover { color:var(--accent); }
+  .pagehead { padding:48px 0 8px; }
+  .pagehead h1 { font:400 clamp(30px,4.6vw,44px)/1.1 var(--serif); letter-spacing:-.01em; margin:0 0 14px; max-width:22ch; }
+  .pagehead p.lead { font-size:18px; color:var(--ink-2); max-width:60ch; margin:0 0 18px; }
+  .facts { list-style:none; margin:0 0 36px; padding:0; display:flex; flex-wrap:wrap; gap:8px 0; color:var(--muted); font-size:14px; }
+  .facts li + li::before { content:"\00b7"; margin:0 10px; color:var(--line); }
+  .facts b { color:var(--ink); font-weight:600; }
+  .docgrid { display:grid; grid-template-columns:1fr; gap:8px; padding-bottom:56px; }
+  @media (min-width:860px) { .docgrid { grid-template-columns:220px minmax(0,1fr); gap:48px; align-items:start; } }
+  nav.toc { border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:8px; }
+  @media (min-width:860px) { nav.toc { position:sticky; top:20px; border-bottom:none; } }
+  nav.toc p.tocLabel { font:400 13px/1 var(--serif); color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin:16px 0 4px; }
+  nav.toc ol { list-style:none; margin:0; padding:0; counter-reset:toc; }
+  nav.toc li { counter-increment:toc; border-top:1px solid var(--line); }
+  nav.toc li:first-child { border-top:none; }
+  nav.toc a { display:flex; gap:10px; padding:9px 0; text-decoration:none; color:var(--ink-2); font-size:14px; line-height:1.3; }
+  nav.toc a::before { content:counter(toc,decimal-leading-zero); font:400 13px/1.6 var(--serif); color:var(--accent); flex:none; }
+  nav.toc a:hover { color:var(--ink); }
+  .chapter { padding:44px 0; border-bottom:1px solid var(--line); scroll-margin-top:20px; }
+  .chapter:last-of-type { border-bottom:none; }
+  .kicker { font:400 14px/1 var(--serif); color:var(--accent); letter-spacing:.06em; text-transform:uppercase; margin:0 0 10px; }
+  h2 { font:400 28px/1.2 var(--serif); margin:0 0 12px; letter-spacing:-.005em; }
+  .chapter > p.sub { color:var(--ink-2); max-width:66ch; margin:0 0 20px; }
+  .steps { counter-reset:step; list-style:none; margin:20px 0; padding:0; max-width:66ch; }
+  .steps li { counter-increment:step; position:relative; padding:13px 0 13px 38px; border-top:1px solid var(--line); }
+  .steps li:first-child { border-top:none; padding-top:0; }
+  .steps li::before { content:counter(step)"."; position:absolute; left:0; top:13px; font:400 16px/1.4 var(--serif); color:var(--accent); }
+  .steps li:first-child::before { top:0; }
+  .steps b { color:var(--ink); }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 0; padding:0; list-style:none; max-width:66ch; }
+  .chips li { font:600 12.5px/1 var(--sans); padding:6px 10px; border-radius:3px; border:1px solid var(--line); color:var(--ink-2); background:var(--paper-2); }
+  .chips b { color:var(--ink); }
+  figure.shot { margin:26px 0; max-width:640px; }
+  figure.shot img { border:1px solid var(--line); background:var(--paper-2); }
+  figure.shot figcaption { color:var(--muted); font-size:13.5px; margin-top:8px; max-width:66ch; }
+  .callout { max-width:66ch; margin:16px 0; padding:2px 0 2px 14px; border-left:3px solid var(--line); color:var(--ink-2); font-size:15px; }
+  .callout.tip { border-left-color:var(--ok); }
+  .callout.warn { border-left-color:var(--accent); }
+  .callout b { color:var(--ink); }
+  .noshot { color:var(--muted); font-size:14px; font-style:italic; max-width:62ch; margin:18px 0 0; }
+  code { font:13.5px/1.4 var(--mono); background:var(--paper-2); border:1px solid var(--line); border-radius:3px; padding:1px 5px; overflow-wrap:anywhere; }
+  .glossary { margin:16px 0 0; max-width:70ch; }
+  .glossary > div { padding:16px 0; border-top:1px solid var(--line); }
+  .glossary > div:first-child { border-top:none; }
+  .glossary dt { font:400 19px/1.3 var(--serif); margin:0 0 6px; }
+  .glossary dd { margin:0; color:var(--ink-2); }
+  footer { padding:32px 0 56px; color:var(--muted); font-size:14px; border-top:1px solid var(--line); }
+  footer .cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px 32px; }
+  footer b { color:var(--ink); font-weight:600; }
+  footer a { color:var(--ink-2); }
+  @media (max-width:480px) { .pagehead { padding:36px 0 4px; } nav.main a { margin-left:12px; } .wordmark small { display:none; } }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","headline":"Janii docs","description":"Step-by-step guide to Janii: unzip and run it, point it at a wedding folder, read the story and the memories it proposes, and hand off to Lightroom or a delivered gallery.","inLanguage":"en","url":"https://arling.sk/janii/docs/","mainEntityOfPage":"https://arling.sk/janii/docs/","about":{"@type":"SoftwareApplication","name":"Janii","applicationCategory":"PhotographyApplication","operatingSystem":"Windows"},"publisher":{"@type":"Organization","name":"ARLing s. r. o.","url":"https://arling.sk/"},"datePublished":"2026-09-06","dateModified":"2026-09-06"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"Install and run Janii","description":"Download, unzip and run the Janii beta on Windows, then point it at a folder of wedding photographs.","step":[
+{"@type":"HowToStep","name":"Download","text":"Go to the GitHub releases page and download the Janii-beta-win64 ZIP, about 130 MB."},
+{"@type":"HowToStep","name":"Unzip","text":"Unzip the whole folder anywhere on disk. janii.exe, engine, models, python and Janii.bat must stay side by side."},
+{"@type":"HowToStep","name":"Run","text":"Double-click Janii.bat. If SmartScreen appears, click 'More info' then 'Run anyway' (the build is not code-signed yet)."},
+{"@type":"HowToStep","name":"Choose a folder","text":"Wait for the green 'Analysis engine ready' check, then click 'Choose a folder' and select your wedding's RAW/JPEG folder."}
+]}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to guide</a>
+<header class="top">
+  <div class="wrap">
+    <a class="wordmark" href="https://arling.sk/janii/">Janii<small>docs</small></a>
+    <nav class="main" aria-label="Page">
+      <a href="https://arling.sk/janii/">Janii</a>
+      <a href="https://arling.sk/janii/#download">Download</a>
+      <a href="https://arling.sk/janii/#sk">Po slovensky</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <div class="pagehead">
+      <h1>How to run Janii.</h1>
+      <p class="lead">Nine short chapters, real screenshots from the current beta build where a screenshot exists to show. Where it does not, this guide says so instead of faking one.</p>
+      <ul class="facts">
+        <li>beta build <b>2026-09-04</b></li>
+        <li>Windows only</li>
+        <li>9 chapters</li>
+        <li>updated <b>2026-09-06</b></li>
+      </ul>
+    </div>
+
+    <div class="docgrid">
+      <nav class="toc" aria-label="Chapters">
+        <p class="tocLabel">Chapters</p>
+        <ol>
+          <li><a href="#install">Install</a></li>
+          <li><a href="#point">Point it at a folder</a></li>
+          <li><a href="#promises">What it promises first</a></li>
+          <li><a href="#working">While it is working</a></li>
+          <li><a href="#reading">Reading the results</a></li>
+          <li><a href="#handoff">Handing off</a></li>
+          <li><a href="#keys">Keyboard shortcuts</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+          <li><a href="#glossary">Glossary</a></li>
+        </ol>
+      </nav>
+
+      <div class="chapters">
+
+        <section class="chapter" id="install">
+          <p class="kicker">01</p>
+          <h2>Install</h2>
+          <p class="sub">Janii is a free public beta, downloaded directly as a self-contained folder. It is not on the Microsoft Store, so Windows warns you before the first run. That warning is expected.</p>
+          <ol class="steps">
+            <li>Open the <a href="https://github.com/AndryRoby/janii/releases/latest" rel="noopener">releases page on GitHub</a> and download the ZIP, about 130 MB.</li>
+            <li>Unzip the whole <code>Janii-beta-win64</code> folder anywhere on disk. <code>janii.exe</code>, <code>engine</code>, <code>models</code>, the bundled <code>python</code> folder and <code>Janii.bat</code> must stay side by side; moving one out breaks the rest.</li>
+            <li>Double-click <code>Janii.bat</code>. A console window opens briefly, then the app itself.</li>
+            <li>Windows SmartScreen shows "Windows protected your PC" because the build is not code-signed yet. Click "More info", then "Run anyway".</li>
+            <li>First launch opens straight to the folder picker: no sign-up, no setup wizard. Chapter 2 covers that screen.</li>
+          </ol>
+          <p class="callout"><b>No Python install needed.</b> A private copy of Python and every library Janii's engine uses ships inside the folder, isolated from anything already on your machine. That is what the "self-contained" claim means in practice.</p>
+          <p class="callout warn"><b>Heads up:</b> Windows only, for now. There is no macOS or Linux build.</p>
+          <p class="noshot">No screenshot for this chapter: the SmartScreen warning shown above comes from Windows itself, not from Janii.</p>
+        </section>
+
+        <section class="chapter" id="point">
+          <p class="kicker">02</p>
+          <h2>Point it at a folder</h2>
+          <p class="sub">One screen, one button. Janii reads the folder where it is; it never asks to copy anything first.</p>
+          <ol class="steps">
+            <li>Wait for the green "Analysis engine ready" check under the button. If it does not turn green, chapter 8 (Troubleshooting) covers what that means.</li>
+            <li>Click "Choose a folder" and select the folder holding your RAW and/or JPEG files. Subfolders are read too.</li>
+            <li>Nothing is copied, moved or renamed at this point, or at any point. See chapter 3 for the exact wording Janii itself shows before it starts.</li>
+          </ol>
+          <figure class="shot">
+            <img src="img/welcome.webp" width="615" height="375" loading="lazy" alt="Janii's first screen: Point at a folder of photographs, with a Choose a folder button and a note that photographs are never copied, moved, renamed or deleted">
+            <figcaption>The first screen, from the current beta build.</figcaption>
+          </figure>
+        </section>
+
+        <section class="chapter" id="promises">
+          <p class="kicker">03</p>
+          <h2>What it promises, before it touches anything</h2>
+          <p class="sub">After you pick a folder, Janii shows exactly what it is about to do, and what it will never do, before you confirm.</p>
+          <ol class="steps">
+            <li>A count of the photographs found, RAW and plain files broken out separately, and the total size on disk.</li>
+            <li>Three things it will do: read every photograph where it is without opening it for writing, group them into moments, and measure each frame to say which is the one to start from.</li>
+            <li>Three things it will never do: never copy, move, rename or delete a photograph (there is no delete function in Janii, anywhere); never send anything anywhere, it does not use the network; never change what you decide, your stars and flags stay yours.</li>
+            <li>Where it will keep its own working files: beside the photographs in a <code>.janii</code> folder (the default, and the one that travels with the photographs if you move them), or in a separate folder elsewhere on the computer if you would rather nothing was written next to a read-only archive.</li>
+          </ol>
+          <figure class="shot">
+            <img src="img/guarantees.webp" width="590" height="170" loading="lazy" alt="Janii's stated guarantees before analysis: read every photograph without opening it for writing, group into moments, measure each frame; never copy, move, rename or delete; never send anything anywhere; never change what you decide">
+            <figcaption>Word for word, from the current beta build.</figcaption>
+          </figure>
+        </section>
+
+        <section class="chapter" id="working">
+          <p class="kicker">04</p>
+          <h2>While it is working</h2>
+          <p class="sub">A progress screen tracks photographs measured out of the total. How long this takes depends entirely on how many RAW files there are and how fast your CPU is; there is no GPU path.</p>
+          <ol class="steps">
+            <li>Janii reads the JPEG preview already embedded in each RAW file first, rather than decoding the full sensor data, which is most of why this is faster than it sounds. A file only gets a full decode when it has no usable preview.</li>
+            <li>You can stop at any point. Nothing done so far is lost or has to be redone: Janii remembers what it already finished.</li>
+            <li>A large wedding (several thousand RAW files) can take a couple of hours on an ordinary laptop. Nobody has published a firm number yet, so treat any estimate, including this one, as something to verify on your own machine rather than a promise.</li>
+          </ol>
+          <p class="callout warn"><b>Known issue in this beta:</b> the rotating tip text at the bottom of this screen sometimes renders as small solid blocks instead of readable words, a font-loading bug in this specific screen. It does not affect the progress bar, the count, or anything Janii is actually doing; it is purely cosmetic. No screenshot of this screen is included in this guide because of it.</p>
+        </section>
+
+        <section class="chapter" id="reading">
+          <p class="kicker">05</p>
+          <h2>Reading the results</h2>
+          <p class="sub">Once a folder is measured, Janii sorts it into moments, then into the story and the memories. Every frame carries one of four short tags rather than a bare score.</p>
+          <ul class="chips">
+            <li><b>send this one</b> chosen for the story</li>
+            <li><b>your eyes</b> too close to call, worth a look</li>
+            <li><b>already covered</b> a near duplicate that lost</li>
+            <li><b>only shot once</b> the only capture, protected</li>
+          </ul>
+          <ol class="steps" style="margin-top:24px">
+            <li><b>Moments</b> are frames of one thing shot close together in time: a burst, a scene, a toast. A moment of fifteen near-identical frames typically collapses to the two or three that actually differ.</li>
+            <li><b>The story</b> is the best photographs that also cover the day, chosen first, to a target count that comes from your own shoot's size, with no padding to reach it.</li>
+            <li><b>The memories</b> is the story plus enough more that nobody who actually appears in the shoot is left with zero photographs of themselves. That "nobody missing" guarantee belongs to the memories specifically, not the story.</li>
+            <li>Grid, Loupe, Compare and Survey (keys <code>G</code> <code>E</code> <code>C</code> <code>N</code>, same layout as Lightroom's Library module) are four ways of looking at the same set of decisions; chapter 7 lists every key.</li>
+          </ol>
+          <p class="noshot">No screenshot in this chapter: the grid, review and moment screens in this beta build are full of real photographs from an actual wedding shoot used for testing, and this guide does not publish real clients' photographs. The tag vocabulary above and the keyboard shortcuts in chapter 7 are shown instead.</p>
+        </section>
+
+        <section class="chapter" id="handoff">
+          <p class="kicker">06</p>
+          <h2>Handing off</h2>
+          <p class="sub">Janii's own opinion is a starting position, not a final word. Every tag can be overridden with a star, a flag or a rejection, the same way as in Lightroom, before you hand anything off.</p>
+          <ol class="steps">
+            <li><b>Write the sidecars:</b> a small <code>.xmp</code> file next to every photograph you decided something about. Lightroom, Bridge and Capture One read it on import: stars 1 to 5, colour labels, and a reject written as a rating of &minus;1. Picks are the one exception; Lightroom's own catalogue format has no XMP field for a pick, and never has, so that one state does not round-trip.</li>
+            <li><b>Deliver a gallery:</b> new JPEGs, written somewhere else, at a chosen size and quality (client gallery, full quality, or an Instagram-sized export) and from a chosen subset (what you picked, three stars and up, everything Janii kept, or all of them). Your original RAW and JPEG files are never opened for writing either way.</li>
+            <li>Both actions are safe to stop and safe to run again. A file is only ever written once it is complete, and work already finished is never redone.</li>
+          </ol>
+          <figure class="shot">
+            <img src="img/deliver.webp" width="500" height="586" loading="lazy" alt="Janii's Get the work out dialog: write XMP sidecars for Lightroom, Bridge and Capture One, or deliver a new JPEG gallery at a chosen size and from a chosen subset of photographs">
+            <figcaption>Get the work out: sidecars for your usual editor, or a delivered gallery.</figcaption>
+          </figure>
+        </section>
+
+        <section class="chapter" id="keys">
+          <p class="kicker">07</p>
+          <h2>Keyboard shortcuts</h2>
+          <p class="sub">Almost all of it is Lightroom's Library module, on purpose, so a working photographer's hands already know the program.</p>
+          <figure class="shot" style="max-width:900px">
+            <img src="img/keys.webp" width="1138" height="803" loading="lazy" alt="Janii's keyboard shortcut reference, grouped into Looking, Deciding, Moving, Zooming, Developing and Review, most shortcuts marked as the same as Lightroom">
+            <figcaption>The full reference, from the current beta build's own help dialog.</figcaption>
+          </figure>
+          <p class="callout tip"><b>Janii-only keys:</b> in Review, <code>[</code> and <code>]</code> step between moments, <code>K</code> keeps every frame in the current moment, and <code>Enter</code> rejects everything behind the winner. Those three have no Lightroom equivalent because Lightroom has no concept of a moment.</p>
+        </section>
+
+        <section class="chapter" id="troubleshooting">
+          <p class="kicker">08</p>
+          <h2>Troubleshooting</h2>
+          <ol class="steps">
+            <li><b>Windows SmartScreen appears:</b> expected, because the build is not code-signed yet (chapter 1). Click "More info", then "Run anyway".</li>
+            <li><b>Antivirus flags the download or the launch:</b> also possible for the same reason (an unsigned new binary). Nothing in Janii's engine calls out to the network; if you want to verify the ZIP itself was not tampered with, compare its SHA-256 checksum against the one published on the <a href="https://arling.sk/janii/#download">download section</a> of the landing page.</li>
+            <li><b>"Analysis engine ready" never turns green:</b> the bundled Python environment inside the folder is likely incomplete or was separated from the rest of it. Re-download the ZIP and unzip it fresh, keeping every file together, rather than copying <code>janii.exe</code> out on its own.</li>
+            <li><b>It is taking a long time:</b> expected for a large wedding on CPU only; see chapter 4. There is currently no progress estimate more precise than the count shown on screen.</li>
+            <li><b>The rotating tip text looks like solid blocks:</b> a known cosmetic font-loading bug on the progress screen (chapter 4); it does not affect the analysis itself.</li>
+            <li><b>Reporting a bug:</b> the most useful report is a precise one: which screen, what you clicked, what you expected, what happened instead, and roughly how many RAW files and which camera. Write to <a href="mailto:andrej@arling.sk">andrej@arling.sk</a>.</li>
+          </ol>
+        </section>
+
+        <section class="chapter" id="glossary">
+          <p class="kicker">09</p>
+          <h2>Glossary</h2>
+          <p class="sub">Terms used throughout this guide, as Janii itself uses them.</p>
+          <dl class="glossary">
+            <div>
+              <dt>Moment</dt>
+              <dd>Frames of one thing, shot close together in time: a burst, a scene, a toast. The unit Janii groups photographs into before deciding anything.</dd>
+            </div>
+            <div>
+              <dt>Story</dt>
+              <dd>The best photographs that also cover the day: a target-count set seeded first, with no padding added just to reach the number, and no guarantee tail.</dd>
+            </div>
+            <div>
+              <dt>Memories</dt>
+              <dd>The story plus enough more that nobody who actually appears in the shoot is left with zero photographs. The "nobody missing" guarantee belongs here, not to the story.</dd>
+            </div>
+            <div>
+              <dt>send this one</dt>
+              <dd>A frame's tag when it is chosen for the story.</dd>
+            </div>
+            <div>
+              <dt>your eyes</dt>
+              <dd>A frame's tag when Janii's own comparison was too close to call confidently, and it is left for a human to decide.</dd>
+            </div>
+            <div>
+              <dt>already covered</dt>
+              <dd>A frame's tag when it is a near duplicate of a stronger frame of the same moment: it lost, not because it is bad on its own.</dd>
+            </div>
+            <div>
+              <dt>only shot once</dt>
+              <dd>A frame's tag when it is the only capture of something that happened. Protected from being called redundant even if it is not the sharpest frame in the folder.</dd>
+            </div>
+            <div>
+              <dt>.janii folder</dt>
+              <dd>Where everything Janii creates lives: its own working database, thumbnails, and, once you ask for it, XMP sidecars or an exported gallery. Delete it and it is as if Janii was never there.</dd>
+            </div>
+          </dl>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><b>ARLing s. r. o.</b><br>Ivanská cesta 32E<br>821 04 Bratislava, Slovakia</div>
+    <div>Company ID 56583486<br>VAT ID SK2122352100<br><a href="mailto:andrej@arling.sk">andrej@arling.sk</a></div>
+    <div><a href="https://arling.sk/janii/">Janii</a> · <a href="https://github.com/AndryRoby/janii/issues">Report a bug</a> · <a href="../llms.txt">llms.txt</a><br>Screenshots are real renders of the current beta build. Anonymous visit counts via self-hosted Umami; never what you type.</div>
+  </div>
+</footer>
+<script defer src="https://homelab.tailbf8f27.ts.net/script.js" data-website-id="3555ea81-b419-4118-84fe-ba0d54ce3e24"></script>
+</body>
+</html>

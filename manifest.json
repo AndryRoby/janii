@@ -1,0 +1,16 @@
+{
+  "name": "Janii: wedding photograph selection",
+  "short_name": "Janii",
+  "description": "Offline Windows app that reads a wedding shoot, groups it into moments, and proposes the story and the memories, with a reason for every frame. Free public beta.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "en",
+  "background_color": "#1b1a17",
+  "theme_color": "#f6f2ea",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

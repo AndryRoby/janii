@@ -1,0 +1,102 @@
+# Janii: five thousand wedding frames in, the story worth showing out
+
+> A free public-beta Windows app for wedding photographers. It reads a folder of RAW and JPEG photographs from a shoot, groups them into moments, and proposes the story (the best photographs that also cover the day) and the memories (the story plus enough more that nobody present is left out), with a stated reason for every frame. Runs entirely offline, on CPU only. Selection only for now: no straightening, cropping or colour grading yet.
+
+## The core idea
+
+A wedding photographer comes home with somewhere between three and ten thousand RAW files from one day and needs to hand a couple a coherent gallery, not a dump of everything the camera saw. Janii reads that whole folder locally, groups frames into "moments" (things shot close together in time: a burst, a scene, a toast), and picks two tiers out of the pool. The story is the best photographs that also cover the day: a target count seeded first, with nothing added just to pad it out to a round number. The memories is the story plus enough more that nobody who was actually at the wedding is left with zero usable photographs of themselves; that "nobody missing" guarantee belongs to the memories specifically, not the story. Every kept or set-aside frame carries a plain-English reason rather than a bare score.
+
+## Reason chips (what a frame is tagged with)
+
+- **send this one**: chosen for the story.
+- **your eyes**: the choice was too close to call confidently; worth ten seconds of a human's attention.
+- **already covered**: a near duplicate of a stronger frame of the same moment, so it lost, not because it is bad on its own.
+- **only shot once**: the only capture of something that happened, protected even if it is not the sharpest frame in the folder.
+
+## Features
+
+- **Reads RAW and JPEG without decoding everything.** Nearly every RAW file carries a ready-made JPEG preview inside it; Janii reads that preview first (roughly 1-2 MB instead of 30) and only falls back to a full decode for the handful of files that need it.
+- **Groups into moments.** Frames of one thing, close together in time, become one moment. A burst of fifteen near-identical frames collapses to the two or three that actually differ; a frame that is a moment's only record is never treated as redundant just because it isn't sharp.
+- **Two-tier selection: story and memories.** The story is chosen first, on its own objective (best photographs that also cover the day, to a target count, no guarantee tail). The memories continues from there until everyone who appears in the shoot has at least one usable frame.
+- **Coverage per person.** Janii counts how many times someone has already made it into the story so far, so a bridal party of ten is not crowded out by whoever posed for every single frame, and a guest who was there is not quietly skipped.
+- **A reason on every frame**, not just a keep/reject bit (see Reason chips above).
+- **Never copies, moves, renames or deletes a photograph.** There is no delete function in Janii, full stop. Everything Janii creates (its working database, thumbnails, and, once you ask for it, XMP sidecars or exported JPEGs) lives in one `.janii` subfolder next to the source photographs. Delete that one folder and it is as if Janii was never there.
+- **Never uses the network.** Reading, measuring and deciding all happen on the machine Janii is running on.
+- **Hands off to your usual editor.** "Write the sidecars" writes a small `.xmp` file per decided photograph (stars 1-5, colour labels, reject as a -1 rating) that Lightroom, Bridge and Capture One read on import. "Deliver a gallery" writes new JPEGs elsewhere, at a chosen size (client gallery, full quality, or an Instagram-sized export) and from a chosen subset (what you picked, three stars and up, everything Janii kept, or all of them) without ever opening an original RAW for writing. Both are safe to stop and re-run: work already finished is remembered and never redone.
+- **Keyboard shortcuts mirror Lightroom's Library module on purpose** (G/E/C/N for grid/loupe/compare/survey, 1-5 for stars, P/X for pick/reject, 6-9 for colour labels), so a working photographer's hands already know the program, plus a few Janii-only keys for moving through moments during review.
+
+## What it does not do (yet)
+
+- **No straightening, cropping or colour grading.** The engine measures colour but changes no pixel. This is a deliberate beta scope, not an oversight: selection first, finishing later. Pick the frames in Janii, then straighten/crop/grade them in Lightroom, Capture One or Bridge as you already do.
+- **Windows only.** No macOS or Linux build exists yet.
+- **CPU only, no GPU acceleration.** The engine (rawpy for RAW decoding, OpenCV and NumPy for measurement) has no GPU code path, so it runs on whichever CPU is in your machine, with zero graphics-card or driver requirement, at the cost of speed. A first pass over a genuinely large wedding (several thousand RAW files) can run for a couple of hours on an ordinary laptop. No specific number is published as a guarantee: the project's own engineering notes are explicit that no public speed claim should be made before it has been measured on a range of real, non-developer machines, so treat any figure, including this one, as a rough expectation to verify on your own hardware, not a benchmark.
+- **No face recognition or people-grouping yet.** The underlying detector (YuNet, MIT licence) and matcher (SFace, Apache-2.0) both run and work correctly in internal testing, on models that need no download from a questionable source and carry no restriction on commercial use. What is not done is wiring that into the product: identifying and grouping photographs by a specific named person raises its own legal question under GDPR Article 9 (special-category biometric data) and the EU AI Act, and that question is being worked through in writing before any face-grouping feature ships, not before the underlying detector works.
+- **Beta, provided as-is.** It can be wrong, it can be slow relative to a future release, and both the engine's decisions and the interface will keep changing before a stable 1.0. Janii is built around never deleting anything, but a beta user should still keep an independent backup of the photographs and verify Janii's read-only behaviour on their own files before trusting it with a real client's wedding.
+
+## Supported file formats
+
+RAW (via LibRaw/rawpy): Canon CR2, CR3, CRW; Nikon NEF, NRW; Sony ARW, SRF, SR2; Fujifilm RAF; Panasonic RW2; Olympus ORF; Pentax PEF, SRW; Adobe/Leica DNG; plus RAW, RWL, 3FR, FFF, IIQ, MOS, MRW, X3F, ERF, KDC and DCR.
+
+Plain images: JPG/JPEG, PNG, TIFF, WebP, BMP, and, where the HEIF/AVIF codec plugin is available on the system, HEIC/HEIF/AVIF.
+
+Janii always prefers the embedded JPEG preview a RAW file already carries; a full sensor decode only happens for the minority of files where no usable preview exists, and how often that fallback was needed is reported in the run summary.
+
+## Status: free public beta
+
+The current build is a standalone Windows folder: no installer, no Python or other dependency to set up separately, everything needed is bundled inside the download. The goal of the beta is downloads and, above all, concrete feedback from photographers running it on their own real weddings. Licensing beyond the beta is: a one-time licence planned at 169 EUR once the beta period ends, and the first ten photographers who send feedback during the beta get first offer on it before the general price applies. Nothing in the current beta requires payment, a trial limit, or an account.
+
+## How to run it
+
+1. Download the ZIP (about 130 MB) and unzip the whole `Janii-beta-win64` folder anywhere on disk. `janii.exe`, the `engine` folder, `models`, the bundled `python` folder and `Janii.bat` must all stay side by side; moving one out of the folder breaks the rest.
+2. Double-click `Janii.bat`. Windows will very likely show "Windows protected your PC" (SmartScreen) on first run, because the build is not code-signed yet: click "More info", then "Run anyway". This warning is expected and documented, not a sign of a broken download.
+3. Wait for the green "Analysis engine ready" check on the first screen, then click "Choose a folder" and select the folder holding your RAW and/or JPEG files.
+4. Wait for the pass to finish. Nothing is opened for writing while Janii works; a first pass over a large wedding is not fast (see "What it does not do yet" above).
+5. Results: a `.janii` subfolder appears next to your photographs, holding Janii's own working database and thumbnails. From the app you can then "Write the sidecars" (an `.xmp` file per decided photograph, for Lightroom/Bridge/Capture One) or "Deliver a gallery" (new JPEGs written elsewhere, at a chosen size and from a chosen subset).
+
+## Download
+
+- **Windows.** ZIP, about 130 MB. Unzip and run `Janii.bat`, no installer, no admin rights.
+  https://github.com/AndryRoby/janii/releases/latest
+
+SHA-256 checksum for the beta build published alongside this reference:
+```
+a33c3588bda3e4c5207aafaa2e1115485fd9cb980834e3aa640b1e6644651742  Janii-beta-win64.zip
+```
+
+Docs: step-by-step guide at https://arling.sk/janii/docs/.
+
+## FAQ
+
+**Which RAW formats does it support?**
+See "Supported file formats" above: essentially every RAW format LibRaw reads, plus common plain image formats.
+
+**Does it upload my photographs?**
+No. Janii never uses the network. All reading, grouping and deciding happens on the computer it is running on.
+
+**Why CPU only?**
+The engine has no GPU code path built yet. Running on CPU only means no graphics card or driver setup is required to use Janii at all, at the cost of speed on a large shoot.
+
+**What is story vs memories?**
+The story is the best photographs that also cover the day, chosen first to a target count with no padding. The memories is the story plus enough more that nobody who was actually at the wedding is left with zero photographs of themselves.
+
+**Can I edit the selection?**
+Yes. Every reason chip Janii puts on a frame is a starting position, not a final verdict. Star, flag or reject any photograph the same way you would in Lightroom's Library module, and delivery (sidecars or a gallery) is written from your decisions, not from Janii's suggestion alone.
+
+**How do I send feedback?**
+Write to andrej@arling.sk with roughly how many RAW files you ran Janii on, which camera(s) shot them, and what looked wrong or surprising. The first ten photographers who send feedback during the beta get first offer on the paid licence once it exists.
+
+## Privacy
+
+No account, no login, no cloud service of any kind. Janii the application never opens a network connection; every photograph stays on the device it is running on, and is never copied, moved, renamed or deleted, only read. The landing page (not the app) uses a self-hosted Umami instance for anonymous page-view and click counts only, never what a visitor downloads or types. The optional "notify me" email signup is voluntary, used for nothing else, and any reply to a notification email unsubscribes you.
+
+## Links
+
+- Landing page: https://arling.sk/janii/
+- Short reference: https://arling.sk/janii/llms.txt
+- Releases (Windows download): https://github.com/AndryRoby/janii/releases/latest
+- Issues / feedback: https://github.com/AndryRoby/janii/issues
+- Hub (more ARLing tools): https://arling.sk/
+
+## Contact
+
+Built and maintained by ARLing s. r. o., Ivanská cesta 32E, 821 04 Bratislava, Slovakia. Company ID 56583486. andrej@arling.sk
