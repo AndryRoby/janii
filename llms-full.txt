@@ -43,7 +43,7 @@ Janii always prefers the embedded JPEG preview a RAW file already carries; a ful
 
 ## Status: free public beta
 
-The current build is a standalone Windows folder: no installer, no Python or other dependency to set up separately, everything needed is bundled inside the download. The goal of the beta is downloads and, above all, concrete feedback from photographers running it on their own real weddings. Licensing beyond the beta is: a one-time licence planned at 169 EUR once the beta period ends, and the first ten photographers who send feedback during the beta get first offer on it before the general price applies. Nothing in the current beta requires payment, a trial limit, or an account.
+The current build is a standalone Windows folder: no installer, no Python or other dependency to set up separately, everything needed is bundled inside the download. The goal of the beta is downloads and, above all, concrete feedback from photographers running it on their own real weddings. Licensing beyond the beta is a subscription: 9 EUR a month or 79 EUR a year with 14 days free, verified offline with a signed key; photographers who test the beta get their first month free. Nothing in the current beta requires payment, a trial limit, or an account.
 
 ## How to run it
 
