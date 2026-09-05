@@ -12,7 +12,7 @@ No straightening, cropping or colour grading: Janii measures colour but changes 
 
 ## Status
 
-Free public beta. The goal of this release is real feedback from wedding photographers. After the beta, a one-time licence is planned at 169 EUR, and the first ten photographers who send feedback during the beta get first offer on it.
+Free public beta. The goal of this release is real feedback from wedding photographers. After the beta, Janii will be a subscription: 9 EUR a month or 79 EUR a year, 14 days free, still fully offline; photographers who test the beta get their first month free.
 
 ## Download
 
