@@ -19,119 +19,117 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <link rel="alternate" type="text/plain" href="https://arling.sk/janii/llms.txt" title="llms.txt">
+<link rel="preload" href="/fonts/arling-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/arling-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/style/paper.css">
 <style>
-  :root {
-    --paper:#f6f2ea; --paper-2:#fbf9f4; --ink:#1b1a17; --ink-2:#4a4741; --muted:#7a766e; --line:#d9d2c4;
-    --accent:#b23a1d; --accent-soft:#f3e2dc; --ok:#2f6f3e;
-    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
-    --sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    --mono:ui-monospace,"Cascadia Code",Consolas,Menlo,monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --paper:#151412; --paper-2:#1d1b18; --ink:#efe9de; --ink-2:#c9c2b5; --muted:#8f887b; --line:#2e2b26; --accent:#e0623f; --accent-soft:#3a1f17; --ok:#7fbf8e; }
-    .btn-solid { color:#151412; }
-  }
-  * { box-sizing:border-box; min-width:0; }
-  html { background:var(--paper); scroll-behavior:smooth; }
-  body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.55 var(--sans); -webkit-font-smoothing:antialiased; overflow-wrap:anywhere; }
-  a { color:inherit; text-decoration-color:var(--line); text-underline-offset:3px; }
-  a:hover { text-decoration-color:var(--accent); }
-  :focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
-  img { max-width:100%; height:auto; display:block; }
-  .skip { position:absolute; left:-999px; top:8px; background:var(--ink); color:var(--paper); padding:8px 12px; z-index:10; }
-  .skip:focus { left:8px; }
-  .wrap { max-width:1040px; margin:0 auto; padding:0 24px; }
-  header.top { border-bottom:1px solid var(--line); }
-  header.top .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:24px; padding:18px 24px; flex-wrap:wrap; }
-  .wordmark { font:600 22px/1 var(--serif); text-decoration:none; }
-  .wordmark small { font:13px/1 var(--sans); color:var(--muted); margin-left:10px; letter-spacing:.04em; }
-  nav.main { display:flex; align-items:baseline; flex-wrap:wrap; }
-  nav.main a { font-size:14px; margin-left:20px; text-decoration:none; color:var(--ink-2); }
-  nav.main a:hover { color:var(--accent); }
-  .hero { padding:64px 0 40px; }
-  .hero h1 { font:400 clamp(32px,5vw,50px)/1.1 var(--serif); letter-spacing:-.01em; margin:0 0 18px; max-width:22ch; }
-  .hero p.lead { font-size:19px; color:var(--ink-2); max-width:60ch; margin:0 0 26px; }
-  .btn { display:inline-block; font:600 15px/1 var(--sans); padding:13px 18px; border-radius:4px; text-decoration:none; cursor:pointer; border:2px solid transparent; }
-  .btn-solid { background:var(--accent); color:#fff; border-color:var(--accent); }
-  .btn-line { border:2px solid var(--ink); color:var(--ink); background:transparent; }
-  .btn + .btn { margin-left:10px; }
-  .facts { list-style:none; margin:22px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:8px 0; color:var(--muted); font-size:14px; }
-  .facts li + li::before { content:"\00b7"; margin:0 10px; color:var(--line); }
-  .facts b { color:var(--ink); font-weight:600; }
+  /* Janii keeps only what is genuinely its own here. Colours, type, header,
+     buttons, sections, cards and footer all come from /style/paper.css. */
+  :root { --wrap:min(1180px,92vw); }   /* a prose page, so a narrower measure than the hub */
+  * { min-width:0; }
+  body { overflow-wrap:anywhere; }
+  img { display:block; }
   figure { margin:0; }
-  figure img { border:1px solid var(--line); background:var(--paper-2); }
-  figcaption { color:var(--muted); font-size:13.5px; margin-top:8px; }
-  .shelfie { padding:8px 0 44px; border-bottom:1px solid var(--line); }
-  .shelfie img { margin:0 auto; }
-  section { padding:44px 0; border-bottom:1px solid var(--line); }
-  .kicker { font:400 14px/1 var(--serif); color:var(--accent); letter-spacing:.06em; text-transform:uppercase; margin:0 0 10px; }
-  h2 { font:400 30px/1.15 var(--serif); margin:0 0 8px; letter-spacing:-.005em; }
-  .sub { color:var(--ink-2); max-width:66ch; margin:0 0 24px; }
-  .rules { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:26px 32px; margin:0; padding:0; list-style:none; counter-reset:r; }
-  .rules li { padding-top:14px; border-top:1px solid var(--line); }
-  .rules li::before { counter-increment:r; content:counter(r,decimal-leading-zero); font:400 14px/1 var(--serif); color:var(--accent); display:block; margin-bottom:8px; }
-  .rules b { display:block; font-weight:600; margin-bottom:4px; }
-  .rules p { margin:0; color:var(--ink-2); font-size:15px; }
+
+  /* Header: the nav stays reachable on a phone instead of disappearing. */
+  @media (max-width:720px) {
+    header { position:static; }             /* a two row bar must not eat a phone screen */
+    .bar { height:auto; padding:11px 0 12px; flex-wrap:wrap; gap:8px 14px; }
+    .bar nav { display:flex; flex-wrap:wrap; gap:6px 14px; }
+    .bar nav a { font-size:13.5px; padding:2px 0; }
+  }
+
+  /* Framed screenshot: the caption sits inside the frame, under a hairline. */
+  .shot figcaption { margin:0; padding:11px 14px; border-top:1px solid var(--line);
+    font-family:var(--ui); font-size:13px; line-height:1.45; color:var(--muted); }
+  .facts { list-style:none; margin:22px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px 0;
+    font-family:var(--ui); font-size:14px; color:var(--muted); }
+  .facts li:not(:last-child)::after { content:"\00b7"; margin:0 10px; color:var(--line); }
+  .facts b { color:var(--ink); font-weight:600; }
+
+  .sub { max-width:66ch; margin:0 0 24px; }
+
+  .rules { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));
+    gap:30px 34px; margin:0; padding:0; list-style:none; counter-reset:r; }
+  @media (min-width:900px) { .rules { grid-template-columns:repeat(3,1fr); } }
+  .rules > li { padding-top:14px; border-top:1px solid var(--line); }
+  .rules > li::before { counter-increment:r; content:counter(r,decimal-leading-zero);
+    font-family:var(--ui); font-size:12px; letter-spacing:.12em; color:var(--accent); display:block; margin-bottom:8px; }
+  .rules b { display:block; font:600 18px/1.3 var(--display); color:var(--ink); letter-spacing:-.01em; margin-bottom:5px; }
+  .rules p { margin:0; font-size:15.5px; }
+
   .chips { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 0; padding:0; list-style:none; }
-  .chips li { font:600 12.5px/1 var(--sans); padding:6px 10px; border-radius:3px; border:1px solid var(--line); color:var(--ink-2); background:var(--paper-2); }
+  .chips li { font:500 12.5px/1 var(--ui); padding:7px 10px; border-radius:7px;
+    border:1px solid var(--line); color:var(--body); background:var(--card); }
   .chips b { color:var(--ink); }
+
   .plain { margin:0; padding:0; list-style:none; max-width:72ch; }
-  .plain li { padding:14px 0; border-top:1px solid var(--line); color:var(--ink-2); }
+  .plain li { padding:14px 0; border-top:1px solid var(--line); }
   .plain li b { color:var(--ink); }
-  .pro-objections { margin-top:28px; }
-  .objections-label { margin:0 0 4px; font:600 13px/1 var(--sans); letter-spacing:.03em; text-transform:uppercase; color:var(--ink-2); }
-  .steps { counter-reset:step; list-style:none; margin:0; padding:0; max-width:68ch; }
-  .steps li { counter-increment:step; position:relative; padding:14px 0 14px 38px; border-top:1px solid var(--line); }
+  @media (min-width:900px) {
+    .plain { display:grid; grid-template-columns:1fr 1fr; gap:0 44px; max-width:none; }
+    .plain li { max-width:52ch; }
+  }
+
+  .pro-objections { margin-top:30px; }
+  .objections-label { margin:0 0 4px; font:500 12px/1 var(--ui); letter-spacing:.1em;
+    text-transform:uppercase; color:var(--muted); }
+
+  /* Numbered how-to list. paper.css uses .steps for its pinned scene, so the
+     grid it sets there is switched back off here. */
+  .steps { display:block; list-style:decimal; margin:0; padding:0 0 0 30px; max-width:68ch; }
+  .steps li { padding:14px 0; border-top:1px solid var(--line); }
   .steps li:first-child { border-top:none; padding-top:0; }
-  .steps li::before { content:counter(step)"."; position:absolute; left:0; top:14px; font:400 17px/1.4 var(--serif); color:var(--accent); }
-  .steps li:first-child::before { top:0; }
+  .steps li::marker { font-family:var(--ui); font-size:14px; color:var(--accent); }
   .steps b { color:var(--ink); }
-  figure.shot { margin:22px 0 0; max-width:520px; }
-  figure.shot img { border:1px solid var(--line); background:var(--paper-2); }
-  .shot-row { display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start; margin-top:16px; }
-  .shot-row .steps { flex:1 1 340px; }
-  .shot-row figure.shot { flex:1 1 260px; margin-top:0; }
-  .dl { max-width:520px; }
-  .dl h3 { font:400 22px/1.2 var(--serif); margin:0 0 6px; }
-  .dl .meta { color:var(--muted); font-size:14px; margin:10px 0 14px; }
-  .dl ol { margin:14px 0 0; padding-left:20px; color:var(--ink-2); font-size:14.5px; }
+
+  .shot-row { display:grid; grid-template-columns:1fr; gap:26px; align-items:start; margin-top:18px; }
+  @media (min-width:900px) { .shot-row { grid-template-columns:1.15fr 1fr; } }
+
+  .dl { max-width:560px; }
+  .dl h3 { margin:0 0 6px; }
+  .dl .meta { font-family:var(--ui); font-size:14px; color:var(--muted); margin:10px 0 16px; }
+  .dl ol { margin:18px 0 0; padding-left:20px; font-size:15px; }
   .dl ol li { margin:6px 0; }
-  code { font:13px/1.4 var(--mono); background:var(--paper-2); border:1px solid var(--line); border-radius:3px; padding:1px 5px; overflow-wrap:anywhere; }
-  .checksum { font-size:13px; color:var(--muted); margin-top:14px; }
+  .checksum { font-family:var(--ui); font-size:13px; color:var(--muted); margin-top:16px; }
   .checksum code { display:inline-block; margin-top:4px; }
+  code { background:var(--card); border:1px solid var(--line); border-radius:5px; padding:1px 5px; }
+
   .ask { display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px; }
-  .ask p { margin:0; color:var(--ink-2); max-width:56ch; }
+  .ask p { margin:0; max-width:56ch; }
   #license-thanks { color:var(--ok); font-weight:600; }
-  .subscribe-ask { border-top:1px solid var(--line); margin-top:24px; padding-top:24px; }
-  .subscribe-form { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-  .subscribe-form input[type="email"] { height:44px; min-width:0; flex:1 1 240px; padding:0 14px; border:1px solid var(--line); border-radius:4px; background:var(--paper-2); color:var(--ink); font:15px/1 var(--sans); }
+  .subscribe-form { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px; max-width:540px; }
+  .subscribe-form input[type="email"] { height:46px; min-width:0; flex:1 1 240px; padding:0 14px;
+    border:1px solid var(--line); border-radius:12px; background:var(--card); color:var(--ink); font:15px/1 var(--ui); }
   .subscribe-form input[type="email"]::placeholder { color:var(--muted); }
   .subscribe-form .btn { flex:none; }
   .hp { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
   #subscribe-thanks { color:var(--ok); font-weight:600; }
   #subscribe-error { color:var(--accent); font-weight:600; }
-  @media (max-width: 480px) { .subscribe-form input[type="email"], .subscribe-form button { width:100%; } }
+  @media (max-width:480px) { .subscribe-form input[type="email"], .subscribe-form button { width:100%; } }
+
   details { border-top:1px solid var(--line); padding:14px 0; }
   details:last-of-type { border-bottom:1px solid var(--line); }
-  summary { cursor:pointer; font:400 19px/1.3 var(--serif); list-style:none; display:flex; justify-content:space-between; gap:12px; }
+  summary { cursor:pointer; font:600 18px/1.35 var(--display); color:var(--ink); letter-spacing:-.01em;
+    list-style:none; display:flex; justify-content:space-between; gap:12px; }
   summary::-webkit-details-marker { display:none; }
-  summary::after { content:"+"; color:var(--accent); flex:none; font-family:var(--sans); }
+  summary::after { content:"+"; color:var(--accent); flex:none; font-family:var(--ui); font-weight:400; }
   details[open] summary::after { content:"\2013"; }
-  details p { color:var(--ink-2); margin:10px 0 0; max-width:70ch; }
-  .sk p { color:var(--ink-2); max-width:70ch; }
-  footer { padding:32px 0 56px; color:var(--muted); font-size:14px; }
-  footer .cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px 32px; }
+  details p { margin:10px 0 0; max-width:70ch; }
+
+  /* The one dark plane, at the end. */
+  .band .sub, .band p { color:#d7d3c8; }
+
+  footer .cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr)); gap:20px 32px; }
   footer b { color:var(--ink); font-weight:600; }
-  footer a { color:var(--ink-2); }
-  @media (max-width: 700px) { .shot-row { flex-direction:column; } }
-  @media (max-width: 480px) { .hero { padding:44px 0 32px; } nav.main a { margin-left:12px; } .wordmark small { display:none; } .btn + .btn { margin-left:0; margin-top:10px; } }
 
   /* Sticky mobile download bar (Paper Sell): mobile only, appears after the hero, closable. */
-  .sticky-cta { position:fixed; left:0; right:0; bottom:0; z-index:30; background:var(--paper-2); border-top:1px solid var(--line); }
+  .sticky-cta { position:fixed; left:0; right:0; bottom:0; z-index:30; background:var(--card); border-top:1px solid var(--line); }
   .sticky-cta-inner { display:flex; align-items:center; gap:10px; max-width:1040px; margin:0 auto; padding:10px 14px; }
-  .sticky-cta-text { flex:1 1 auto; min-width:0; font-size:12.5px; color:var(--ink-2); overflow-wrap:anywhere; }
-  .sticky-cta .btn { flex:none; padding:10px 14px; font-size:13.5px; margin:0; }
-  .sticky-cta-close { flex:none; width:30px; height:30px; border:1px solid var(--line); background:var(--paper); color:var(--ink-2); border-radius:4px; cursor:pointer; font:16px/1 var(--sans); padding:0; }
+  .sticky-cta-text { flex:1 1 auto; min-width:0; font-family:var(--ui); font-size:12.5px; color:var(--body); }
+  .sticky-cta .btn { flex:none; height:40px; padding:0 14px; font-size:13.5px; margin:0; }
+  .sticky-cta-close { flex:none; width:32px; height:32px; border:1px solid var(--line); background:var(--paper);
+    color:var(--muted); border-radius:8px; cursor:pointer; font:16px/1 var(--ui); padding:0; }
   .sticky-cta-close:hover { border-color:var(--accent); color:var(--accent); }
   @media (min-width:761px) { .sticky-cta { display:none !important; } }
   @media print { .sticky-cta { display:none !important; } }
@@ -150,11 +148,16 @@
 </script>
 </head>
 <body>
+<div class="wash" aria-hidden="true"><i></i><i></i></div>
 <a class="skip" href="#download">Skip to download</a>
-<header class="top">
-  <div class="wrap">
-    <a class="wordmark" href="https://arling.sk/janii/">Janii<small>an ARLing app</small></a>
-    <nav class="main" aria-label="Page">
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="https://arling.sk/janii/">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><defs><path id="m" fill-rule="evenodd" d="M16 2.5 L29 29.5 H3 Z M16 12.4 L22.4 25.6 H9.6 Z"/><clipPath id="mr"><rect x="16" width="16" height="32"/></clipPath></defs><use href="#m" fill="#141413"/><use href="#m" fill="#b23a1d" clip-path="url(#mr)"/></svg>
+      <b>ARLing</b><span>Janii</span>
+    </a>
+    <nav aria-label="Page">
       <a href="#what">What it does</a>
       <a href="#download">Download</a>
       <a href="docs/" data-umami-event="open-docs">Docs</a>
@@ -165,12 +168,15 @@
 </header>
 
 <main>
-  <div class="hero">
-    <div class="wrap">
-      <h1>Five thousand wedding frames in. The five hundred worth showing out.</h1>
-      <p class="lead">Janii reads a folder of RAW and JPEG photographs from a wedding, on your own Windows PC, works out which moments they belong to, and tells you which frames earn a place, and why. Nothing is uploaded, copied, renamed or deleted.</p>
-      <a class="btn btn-solid" href="https://github.com/AndryRoby/janii/releases/download/v0.1.0-beta/Janii-beta-win64.zip" data-umami-event="download_click" data-umami-event-place="hero" rel="noopener">Download the free beta</a><a class="btn btn-line" href="#what" data-umami-event="demo_click" data-umami-event-place="hero">See how it picks</a>
-      <ul class="facts">
+  <div class="wrap hero" id="hero">
+    <div>
+      <h1 id="h1"><span class="l">Five thousand</span><span class="l">wedding frames in.</span><span class="l">The five hundred</span><span class="l">worth showing out.</span></h1>
+      <p class="lead r d3">Janii reads a folder of RAW and JPEG photographs from a wedding, on your own Windows PC, works out which moments they belong to, and tells you which frames earn a place, and why. Nothing is uploaded, copied, renamed or deleted.</p>
+      <div class="cta r d4">
+        <a class="btn btn-solid" href="https://github.com/AndryRoby/janii/releases/download/v0.1.0-beta/Janii-beta-win64.zip" data-umami-event="download_click" data-umami-event-place="hero" rel="noopener">Download the free beta</a>
+        <a class="btn btn-line" href="#what" data-umami-event="demo_click" data-umami-event-place="hero">See how it picks</a>
+      </div>
+      <ul class="facts proof r d5">
         <li><b>Windows</b>, free beta</li>
         <li>offline, no upload</li>
         <li>RAW and JPEG</li>
@@ -178,23 +184,22 @@
         <li>a reason on every frame</li>
       </ul>
     </div>
-  </div>
-
-  <div class="shelfie">
-    <div class="wrap">
-      <figure>
+    <div class="r d2">
+      <figure class="shot">
+        <div class="chrome"><i></i><i></i><i></i></div>
         <img src="assets/welcome.webp" width="615" height="375" alt="Janii's first screen: 'Point at a folder of photographs', a Choose a folder button, and a note that photographs are never copied, moved, renamed or deleted">
         <figcaption>The first screen, from the current beta build. Point Janii at a folder and it starts reading.</figcaption>
       </figure>
     </div>
   </div>
 
-  <section id="what">
+  <section id="what" class="deep">
     <div class="wrap">
       <p class="kicker">01</p>
-      <h2>What it does</h2>
-      <p class="sub">Two tiers come out of every folder Janii reads: the story, and the memories. Every frame in either one carries a reason, not just a checkmark.</p>
-      <ol class="rules">
+      <h2 class="r">What it does</h2>
+      <div class="rule"></div>
+      <p class="sub r d1">Two tiers come out of every folder Janii reads: the story, and the memories. Every frame in either one carries a reason, not just a checkmark.</p>
+      <ol class="rules r d2">
         <li><b>Story and memories</b><p>Story is the best photographs that also cover the day: the handoff-ready set, on the order of five hundred out of five thousand, seeded first with no padding to hit the count. Memories is the story plus enough more that nobody who was actually there is left with zero photographs.</p></li>
         <li><b>A reason on every frame</b><p>Each photograph is tagged, not just kept or dropped.</p>
           <ul class="chips">
@@ -215,22 +220,23 @@
   <section id="price">
     <div class="wrap">
       <p class="kicker">02</p>
-      <h2>Price after the beta</h2>
-      <p class="sub">The beta is free today, in full, with no time limit and no feature cut down for it. Once the beta ends, Janii moves to the same subscription plan as ARLing's other paid tools.</p>
-      <ul class="plain">
+      <h2 class="r">Price after the beta</h2>
+      <div class="rule"></div>
+      <p class="sub r d1">The beta is free today, in full, with no time limit and no feature cut down for it. Once the beta ends, Janii moves to the same subscription plan as ARLing's other paid tools.</p>
+      <ul class="plain r d2">
         <li><b>9 EUR a month, or 79 EUR a year.</b> Planned price once the beta period ends; nothing is charged during the beta.</li>
         <li><b>14 days free when it launches.</b> No card needed to keep trying the paid version during that window.</li>
         <li><b>Offline either way.</b> The paid licence is a signed key with an expiry date, checked on your own machine; Janii still never needs the internet to run.</li>
         <li><b>Beta testers get the first month free.</b> Anyone who ran the beta on a real wedding and sent feedback gets one month of the paid version at no charge, the owner's decision, not a limited-time trick.</li>
       </ul>
 
-      <div class="ask" style="margin-top:22px;">
+      <div class="ask r d3" style="margin-top:26px;">
         <p><b>Want first pick when pricing goes live?</b> Say so now, no obligation, no payment today.</p>
         <button class="btn btn-line" id="license-btn" data-umami-event="licence_interest" type="button">I would buy a licence</button>
         <p id="license-thanks" hidden>Thank you. Noted.</p>
       </div>
 
-      <div class="pro-objections">
+      <div class="pro-objections r d4">
         <p class="objections-label">Before you download</p>
         <details>
           <summary>Does Janii upload my photographs?</summary>
@@ -252,12 +258,13 @@
     </div>
   </section>
 
-  <section id="honest">
+  <section id="honest" class="deep">
     <div class="wrap">
       <p class="kicker">03</p>
-      <h2>What it does not do yet</h2>
-      <p class="sub">Said plainly, so you know before you download.</p>
-      <ul class="plain">
+      <h2 class="r">What it does not do yet</h2>
+      <div class="rule"></div>
+      <p class="sub r d1">Said plainly, so you know before you download.</p>
+      <ul class="plain r d2">
         <li><b>No straightening, cropping or colour grading.</b> Selection only, for now. Janii measures colour but changes no pixel; finish the picked frames in Lightroom, Capture One or Bridge as usual.</li>
         <li><b>Windows only.</b> No macOS or Linux build exists yet.</li>
         <li><b>CPU only, no GPU path.</b> A first pass over a big wedding, several thousand RAW files, can run for hours on an ordinary laptop. There is no published benchmark yet, so time it on your own machine before you plan around a number.</li>
@@ -270,9 +277,10 @@
   <section id="run">
     <div class="wrap">
       <p class="kicker">04</p>
-      <h2>How to run it</h2>
-      <p class="sub">No installer. Unzip, double-click, choose a folder.</p>
-      <div class="shot-row">
+      <h2 class="r">How to run it</h2>
+      <div class="rule"></div>
+      <p class="sub r d1">No installer. Unzip, double-click, choose a folder.</p>
+      <div class="shot-row r d2">
         <ol class="steps">
           <li>Unzip the whole <code>Janii-beta-win64</code> folder anywhere on disk. Keep <code>janii.exe</code>, <code>engine</code>, <code>models</code>, <code>python</code> and <code>Janii.bat</code> side by side; moving one out of the folder breaks the rest.</li>
           <li>Double-click <code>Janii.bat</code>. Windows will likely show "Windows protected your PC" first, because the build is not code-signed yet: click "More info", then "Run anyway". That warning is expected.</li>
@@ -283,7 +291,7 @@
           <figcaption>Choose a folder, and Janii starts reading.</figcaption>
         </figure>
       </div>
-      <div class="shot-row" style="margin-top:36px">
+      <div class="shot-row r d3" style="margin-top:40px">
         <ol class="steps" start="4">
           <li>Wait. A first pass over a big wedding takes a while on CPU (see "What it does not do yet" above). While it works, your photographs are never opened for writing.</li>
           <li><b>Where results land:</b> everything Janii creates goes into one <code>.janii</code> subfolder next to your photographs, plus, once you ask for it, a JPEG preview and an <code>.xmp</code> sidecar per frame that Lightroom, Bridge and Capture One read on import.</li>
@@ -293,19 +301,20 @@
           <figcaption>What Janii states before it touches a folder, word for word.</figcaption>
         </figure>
       </div>
-      <figure class="shot" style="margin-top:36px; max-width:640px">
+      <figure class="shot r d4" style="margin-top:40px; max-width:560px">
         <img src="assets/deliver.webp" width="500" height="586" loading="lazy" alt="Janii's 'Get the work out' dialog: write XMP sidecars for Lightroom, Bridge and Capture One, or deliver a gallery of new JPEGs at a chosen size and quality">
         <figcaption>When you are done: write sidecars, or deliver a gallery. Originals are never opened for writing.</figcaption>
       </figure>
     </div>
   </section>
 
-  <section id="download">
+  <section id="download" class="deep">
     <div class="wrap">
       <p class="kicker">05</p>
-      <h2>Download</h2>
-      <p class="sub">Beta build, free. One click downloads the file.</p>
-      <div class="dl">
+      <h2 class="r">Download</h2>
+      <div class="rule"></div>
+      <p class="sub r d1">Beta build, free. One click downloads the file.</p>
+      <div class="dl r d2">
         <h3>Windows</h3>
         <p class="meta">ZIP, about 130&nbsp;MB. Unzip and run, no installer, no admin rights.</p>
         <a class="btn btn-solid" href="https://github.com/AndryRoby/janii/releases/download/v0.1.0-beta/Janii-beta-win64.zip" data-umami-event="download-zip" rel="noopener">Download Janii for Windows</a>
@@ -321,48 +330,57 @@
   <section id="subscribe">
     <div class="wrap">
       <p class="kicker">06</p>
-      <h2>Stay in the loop</h2>
-      <div class="ask">
+      <h2 class="r">Stay in the loop</h2>
+      <div class="rule"></div>
+      <div class="ask r d1">
         <p><b>Tell me when a new build lands.</b> New builds and new tools only. No newsletter, no sharing. Reply to any mail to be removed.</p>
       </div>
-      <form id="subscribe-form" class="subscribe-form" data-subscribe data-source="janii" data-lang="en" data-thanks="subscribe-thanks" data-error="subscribe-error" novalidate>
+      <form id="subscribe-form" class="subscribe-form r d2" data-subscribe data-source="janii" data-lang="en" data-thanks="subscribe-thanks" data-error="subscribe-error" novalidate>
         <div class="hp" aria-hidden="true"><input type="text" name="website" id="subscribe-website" tabindex="-1" autocomplete="off"></div>
         <input type="email" id="subscribe-email" name="email" required autocomplete="email" inputmode="email" placeholder="you@example.com" aria-label="Email address">
-        <button class="btn btn-solid" type="submit">Notify me</button>
+        <button class="btn btn-solid" type="submit" data-umami-event="subscribe_click">Notify me</button>
       </form>
       <p id="subscribe-thanks" hidden>Thanks. You will hear from us only when something new is live.</p>
       <p id="subscribe-error" hidden>Could not save. Write to <a href="mailto:andrej@arling.sk">andrej@arling.sk</a>.</p>
     </div>
   </section>
 
-  <section id="faq">
+  <section id="faq" class="deep">
     <div class="wrap">
       <p class="kicker">07</p>
-      <h2>Questions</h2>
-      <details><summary>Which RAW formats does it support?</summary><p>Everything LibRaw reads through rawpy: Canon CR2/CR3/CRW, Nikon NEF/NRW, Sony ARW/SRF/SR2, Fujifilm RAF, Panasonic RW2, Olympus ORF, Pentax PEF/SRW, Adobe/Leica DNG, plus RAW, RWL, 3FR, FFF, IIQ, MOS, MRW, X3F, ERF, KDC and DCR. JPEG, PNG, TIFF, WebP, BMP and, where the codec is present on your system, HEIC/HEIF/AVIF also read directly. Janii prefers the JPEG preview already embedded in each RAW and only falls back to a full decode when a file has none.</p></details>
-      <details><summary>Does it upload my photographs?</summary><p>No. Janii never uses the network. Reading, measuring and deciding all happen on your own computer, and photographs are never copied, moved, renamed or deleted. Everything Janii creates lives in one <code>.janii</code> folder beside your files.</p></details>
-      <details><summary>Why CPU only?</summary><p>The engine (rawpy, OpenCV, NumPy) has no GPU code path yet, so it runs on whatever CPU is already in your laptop, with no graphics card or driver setup required. The cost is time: a first pass over a big wedding can run for hours, not minutes, and there is no published benchmark yet.</p></details>
-      <details><summary>What is story vs memories?</summary><p>The story is the best photographs that also cover the day: a fixed target count, seeded first, with no padding to reach it. The memories is the story plus enough more that nobody who was actually there is left with zero photographs; that "nobody missing" guarantee belongs to the memories, not the story.</p></details>
-      <details><summary>Can I edit the selection?</summary><p>Yes. Every tag Janii puts on a frame, in the story, only shot once, already covered, is a starting position, not a verdict. Star, flag or reject any photograph the way you would in Lightroom, and delivery writes XMP sidecars or a gallery from your decisions, not Janii's.</p></details>
-      <details><summary>How do I send feedback?</summary><p>Write to <a href="mailto:andrej@arling.sk" data-umami-event="contact-email">andrej@arling.sk</a> with roughly how many RAW files you ran, which camera, and what looked wrong. Anyone who runs the beta on a real wedding and sends feedback gets the first month of the paid version free once it launches (see Price after the beta above).</p></details>
+      <h2 class="r">Questions</h2>
+      <div class="rule"></div>
+      <div class="r d1">
+        <details><summary>Which RAW formats does it support?</summary><p>Everything LibRaw reads through rawpy: Canon CR2/CR3/CRW, Nikon NEF/NRW, Sony ARW/SRF/SR2, Fujifilm RAF, Panasonic RW2, Olympus ORF, Pentax PEF/SRW, Adobe/Leica DNG, plus RAW, RWL, 3FR, FFF, IIQ, MOS, MRW, X3F, ERF, KDC and DCR. JPEG, PNG, TIFF, WebP, BMP and, where the codec is present on your system, HEIC/HEIF/AVIF also read directly. Janii prefers the JPEG preview already embedded in each RAW and only falls back to a full decode when a file has none.</p></details>
+        <details><summary>Does it upload my photographs?</summary><p>No. Janii never uses the network. Reading, measuring and deciding all happen on your own computer, and photographs are never copied, moved, renamed or deleted. Everything Janii creates lives in one <code>.janii</code> folder beside your files.</p></details>
+        <details><summary>Why CPU only?</summary><p>The engine (rawpy, OpenCV, NumPy) has no GPU code path yet, so it runs on whatever CPU is already in your laptop, with no graphics card or driver setup required. The cost is time: a first pass over a big wedding can run for hours, not minutes, and there is no published benchmark yet.</p></details>
+        <details><summary>What is story vs memories?</summary><p>The story is the best photographs that also cover the day: a fixed target count, seeded first, with no padding to reach it. The memories is the story plus enough more that nobody who was actually there is left with zero photographs; that "nobody missing" guarantee belongs to the memories, not the story.</p></details>
+        <details><summary>Can I edit the selection?</summary><p>Yes. Every tag Janii puts on a frame, in the story, only shot once, already covered, is a starting position, not a verdict. Star, flag or reject any photograph the way you would in Lightroom, and delivery writes XMP sidecars or a gallery from your decisions, not Janii's.</p></details>
+        <details><summary>How do I send feedback?</summary><p>Write to <a href="mailto:andrej@arling.sk" data-umami-event="contact-email">andrej@arling.sk</a> with roughly how many RAW files you ran, which camera, and what looked wrong. Anyone who runs the beta on a real wedding and sends feedback gets the first month of the paid version free once it launches (see Price after the beta above).</p></details>
+      </div>
     </div>
   </section>
 
   <section id="sk" class="sk" lang="sk">
     <div class="wrap">
       <p class="kicker">08</p>
-      <h2>Po slovensky</h2>
-      <p>Janii je desktopová aplikácia pre svadobných fotografov: prezrie priečinok s RAW a JPEG fotkami z jednej svadby, zoskupí ich do momentov a navrhne dve vrstvy výberu. Príbeh (story) sú najlepšie zábery, ktoré zároveň pokrývajú celý deň, na úrovni päťsto z päťtisíc, bez dopĺňania na počet. Spomienky (memories) sú príbeh plus toľko navyše, aby nikto skutočne prítomný neostal bez jedinej fotky. Pri každom zábere je dôvod: poslať tento, potrebuje váš pohľad, už pokryté, alebo jediný záber tejto chvíle. Beží celé na vašom počítači, offline, nič sa nikam neposiela, a Janii fotky nikdy nekopíruje, nepremenúva ani nemaže.</p>
-      <p>Čo appka zatiaľ nevie: vyrovnanie horizontu, orezanie ani farebný grading (beta je len výber, dokončenie ide cez Lightroom, Capture One alebo Bridge ako doteraz). Beží len na Windows a len na CPU: prvý prechod väčšou svadbou (niekoľko tisíc RAW súborov) môže trvať aj hodiny. Rozpoznávanie tvárí ešte nie je zapojené, kvôli nedoriešenej právnej otázke okolo identifikácie osôb (GDPR čl. 9), nie technicky.</p>
-      <p>Beta je zadarmo, bez časového obmedzenia. Po skončení bety bude appka na predplatné: 9&nbsp;€ mesačne alebo 79&nbsp;€ ročne, prvých 14 dní zadarmo, rovnako ako pri ostatných platených nástrojoch ARLing. Appka ostáva offline aj potom, licenčný kľúč s platnosťou sa overuje bez internetu. Fotografi, ktorí appku vyskúšajú na reálnej svadbe počas bety a pošlú spätnú väzbu, dostanú prvý mesiac platenej verzie zadarmo. Napíšte na <a href="mailto:andrej@arling.sk" data-umami-event="contact-email">andrej@arling.sk</a> s tým, na koľkých RAW súboroch ste to skúsili a čo nesedelo.</p>
-      <p><a class="btn btn-solid" href="#download">Stiahnuť betu</a><a class="btn btn-line" href="docs/" data-umami-event="open-docs">Návod</a></p>
+      <h2 class="r">Po slovensky</h2>
+      <div class="rule"></div>
+      <div class="r d1">
+        <p>Janii je desktopová aplikácia pre svadobných fotografov: prezrie priečinok s RAW a JPEG fotkami z jednej svadby, zoskupí ich do momentov a navrhne dve vrstvy výberu. Príbeh (story) sú najlepšie zábery, ktoré zároveň pokrývajú celý deň, na úrovni päťsto z päťtisíc, bez dopĺňania na počet. Spomienky (memories) sú príbeh plus toľko navyše, aby nikto skutočne prítomný neostal bez jedinej fotky. Pri každom zábere je dôvod: poslať tento, potrebuje váš pohľad, už pokryté, alebo jediný záber tejto chvíle. Beží celé na vašom počítači, offline, nič sa nikam neposiela, a Janii fotky nikdy nekopíruje, nepremenúva ani nemaže.</p>
+        <p>Čo appka zatiaľ nevie: vyrovnanie horizontu, orezanie ani farebný grading (beta je len výber, dokončenie ide cez Lightroom, Capture One alebo Bridge ako doteraz). Beží len na Windows a len na CPU: prvý prechod väčšou svadbou (niekoľko tisíc RAW súborov) môže trvať aj hodiny. Rozpoznávanie tvárí ešte nie je zapojené, kvôli nedoriešenej právnej otázke okolo identifikácie osôb (GDPR čl. 9), nie technicky.</p>
+        <p>Beta je zadarmo, bez časového obmedzenia. Po skončení bety bude appka na predplatné: 9&nbsp;€ mesačne alebo 79&nbsp;€ ročne, prvých 14 dní zadarmo, rovnako ako pri ostatných platených nástrojoch ARLing. Appka ostáva offline aj potom, licenčný kľúč s platnosťou sa overuje bez internetu. Fotografi, ktorí appku vyskúšajú na reálnej svadbe počas bety a pošlú spätnú väzbu, dostanú prvý mesiac platenej verzie zadarmo. Napíšte na <a href="mailto:andrej@arling.sk" data-umami-event="contact-email">andrej@arling.sk</a> s tým, na koľkých RAW súboroch ste to skúsili a čo nesedelo.</p>
+        <div class="cta" style="margin-top:24px"><a class="btn btn-solid" href="#download" data-umami-event="download-jump" data-umami-event-place="sk">Stiahnuť betu</a><a class="btn btn-line" href="docs/" data-umami-event="open-docs">Návod</a></div>
+      </div>
     </div>
   </section>
 
-  <section id="closing-cta">
+  <section id="closing-cta" class="band">
     <div class="wrap" style="text-align:center;">
-      <p class="sub" style="margin:0 auto 18px;">Free beta today, no time limit. Windows, offline, a reason on every frame.</p>
-      <a class="btn btn-solid" href="https://github.com/AndryRoby/janii/releases/download/v0.1.0-beta/Janii-beta-win64.zip" data-umami-event="download_click" data-umami-event-place="closing" rel="noopener">Download the free beta</a>
+      <p class="sub r" style="margin:0 auto 22px;">Free beta today, no time limit. Windows, offline, a reason on every frame.</p>
+      <div class="cta r d1" style="justify-content:center">
+        <a class="btn btn-solid" href="https://github.com/AndryRoby/janii/releases/download/v0.1.0-beta/Janii-beta-win64.zip" data-umami-event="download_click" data-umami-event-place="closing" rel="noopener">Download the free beta</a>
+      </div>
     </div>
   </section>
 </main>
@@ -382,6 +400,7 @@
     <div><a href="docs/" data-umami-event="open-docs">Docs</a> · <a href="https://github.com/AndryRoby/janii/releases">Releases</a> · <a href="https://github.com/AndryRoby/janii/issues">Report a bug</a> · <a href="llms.txt">llms.txt</a> · <a href="https://arling.sk/privacy/">Privacy</a><br>Provided as is, without warranty, as a free public beta. Anonymous visit and click counts via self-hosted Umami; never what you type.</div>
   </div>
 </footer>
+<script src="paper.js" defer></script>
 <script src="subscribe.js" defer></script>
 <script defer src="https://homelab.tailbf8f27.ts.net/script.js" data-website-id="3555ea81-b419-4118-84fe-ba0d54ce3e24"></script>
 <script src="sell.js" defer></script>

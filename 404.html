@@ -3,38 +3,39 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://homelab.tailbf8f27.ts.net; connect-src 'self' https://homelab.tailbf8f27.ts.net; img-src 'self' data:; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'none'; object-src 'none'">
 <title>Page not found: Janii</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="/janii/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/janii/favicon.ico" sizes="any">
+<link rel="preload" href="/fonts/arling-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/arling-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/style/paper.css">
 <style>
-  :root {
-    --paper:#f6f2ea; --paper-2:#fbf9f4; --ink:#1b1a17; --ink-2:#4a4741; --muted:#7a766e; --line:#d9d2c4;
-    --accent:#b23a1d;
-    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
-    --sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --paper:#151412; --paper-2:#1d1b18; --ink:#efe9de; --ink-2:#c9c2b5; --muted:#8f887b; --line:#2e2b26; --accent:#e0623f; }
-  }
-  * { box-sizing:border-box; }
-  html { background:var(--paper); }
-  body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; background:var(--paper); color:var(--ink); font:16px/1.55 var(--sans); }
-  .card { max-width:440px; width:100%; text-align:center; border:1px solid var(--line); background:var(--paper-2); border-radius:4px; padding:40px 32px; }
-  .brand { display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); font:600 20px/1 var(--serif); margin-bottom:28px; }
-  .code { font:13px/1 var(--sans); color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin:0 0 10px; }
-  h1 { font:400 26px/1.25 var(--serif); margin:0 0 12px; }
-  p.sub { color:var(--ink-2); font-size:15px; margin:0 0 26px; }
-  .btn { display:inline-block; font:600 15px/1 var(--sans); padding:12px 18px; border-radius:4px; text-decoration:none; background:var(--accent); color:#fff; }
+  /* Only the centring. Colours, type, card and button come from /style/paper.css. */
+  body { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+  .card { position:relative; z-index:2; max-width:460px; width:100%; text-align:center; padding:44px 34px; }
+  .card .brand { display:inline-flex; margin-bottom:26px; }
+  .card h1 { font-size:clamp(26px,3.4vw,34px); }
+  .card p { margin:0 auto 26px; color:var(--body); }
+  /* Written after .card p, and with the same tag in the selector, so the label
+     really is the accent colour and really does sit 10 px above the heading. */
+  .card p.code { font-family:var(--ui); font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 10px; }
 </style>
 </head>
 <body>
-  <div class="card">
-    <a class="brand" href="/janii/">Janii</a>
-    <p class="code">404</p>
-    <h1>This frame is not in the story.</h1>
-    <p class="sub">The page you are looking for is not here: it moved, or it never existed. Nothing was deleted, that is a Janii guarantee everywhere on this site.</p>
-    <a class="btn" href="/janii/">Back to Janii</a>
-  </div>
+<div class="wash" aria-hidden="true"><i></i><i></i></div>
+<div class="card">
+  <a class="brand" href="/janii/">
+    <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><defs><path id="m" fill-rule="evenodd" d="M16 2.5 L29 29.5 H3 Z M16 12.4 L22.4 25.6 H9.6 Z"/><clipPath id="mr"><rect x="16" width="16" height="32"/></clipPath></defs><use href="#m" fill="#141413"/><use href="#m" fill="#b23a1d" clip-path="url(#mr)"/></svg>
+    <b>ARLing</b><span>Janii</span>
+  </a>
+  <p class="code">404</p>
+  <h1>This frame is not in the story.</h1>
+  <p>The page you are looking for is not here: it moved, or it never existed. Nothing was deleted, that is a Janii guarantee everywhere on this site.</p>
+  <a class="btn btn-solid" href="/janii/" data-umami-event="404_back">Back to Janii</a>
+</div>
+<script defer src="https://homelab.tailbf8f27.ts.net/script.js" data-website-id="3555ea81-b419-4118-84fe-ba0d54ce3e24"></script>
 </body>
 </html>
