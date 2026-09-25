@@ -4,7 +4,7 @@
 <script src="/style/vzhlad.js?v=8a4019ae"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://homelab.tailbf8f27.ts.net 'sha256-xh1IRCVOHgmUEyQnN7LE25zaJQ5kGR6ffjNITj8xKtQ=' 'sha256-7u5fTFqXy/Dn+BjrwMbw7vZbR7SYer2efoGYa7U46DI='; connect-src 'self' https://homelab.tailbf8f27.ts.net; img-src 'self' data:; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://homelab.tailbf8f27.ts.net 'sha256-xh1IRCVOHgmUEyQnN7LE25zaJQ5kGR6ffjNITj8xKtQ=' 'sha256-YqLlzKMnket9HQ4MuWy3uF+d4LjzT/4CN1+tjpj6HGc='; connect-src 'self' https://homelab.tailbf8f27.ts.net; img-src 'self' data:; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'none'; object-src 'none'">
 <meta name="color-scheme" content="dark">
 <link rel="preconnect" href="https://homelab.tailbf8f27.ts.net" crossorigin>
 <meta name="theme-color" content="#0a0908">
@@ -105,7 +105,6 @@
 
   .ask { display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px; }
   .ask p { margin:0; max-width:56ch; }
-  #license-thanks { color:var(--ok); font-weight:600; }
   .subscribe-form { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px; max-width:540px; }
   .subscribe-form input[type="email"] { height:46px; min-width:0; flex:1 1 240px; padding:0 14px;
     border:1px solid var(--line); border-radius:12px; background:var(--card); color:var(--ink); font:15px/1 var(--ui); }
@@ -152,7 +151,7 @@
 {"@type":"Question","name":"Why CPU only, no GPU?","acceptedAnswer":{"@type":"Answer","text":"The engine (rawpy, OpenCV, NumPy) has no GPU code path yet, so it runs on whatever CPU is already in your laptop, with no graphics card or driver setup required. The cost is time: a first pass over a big wedding can run for hours, not minutes."}},
 {"@type":"Question","name":"What is the difference between the story and the memories?","acceptedAnswer":{"@type":"Answer","text":"The story is the best photographs that also cover the day, a fixed target count seeded first with no padding. The memories is the story plus enough more that nobody who was actually there is left with zero photographs; that guarantee belongs to the memories, not the story."}},
 {"@type":"Question","name":"Can I edit Janii's selection?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every tag Janii puts on a frame is a starting position, not a verdict. Star, flag or reject any photograph the way you would in Lightroom, and delivery writes XMP sidecars or a gallery from your decisions, not Janii's."}},
-{"@type":"Question","name":"How do I send feedback on the beta?","acceptedAnswer":{"@type":"Answer","text":"Write to andrej@arling.sk with roughly how many RAW files you ran, which camera, and what looked wrong. Anyone who runs the beta on a real wedding and sends feedback gets the first month of the paid version free once it launches."}}]}
+{"@type":"Question","name":"How do I send feedback on the beta?","acceptedAnswer":{"@type":"Answer","text":"Write to andrej@arling.sk with roughly how many RAW files you ran, which camera, and what looked wrong. Janii will be open source and free; no paid version is planned."}}]}
 </script>
 </head>
 <body class="noc">
@@ -227,21 +226,14 @@
   <section id="price">
     <div class="wrap">
       <p class="kicker">02</p>
-      <h2 class="r">Price after the beta</h2>
+      <h2 class="r">Price: free</h2>
       <div class="rule"></div>
-      <p class="sub r d1">The beta is free today, in full, with no time limit and no feature cut down for it. Once the beta ends, Janii moves to the same subscription plan as ARLing's other paid tools.</p>
+      <p class="sub r d1">Janii will be open source and free. The beta is free today, in full, with no time limit and no feature cut down for it, and no paid version is planned after it.</p>
       <ul class="plain r d2">
-        <li><b>9 EUR a month, or 79 EUR a year.</b> Planned price once the beta period ends; nothing is charged during the beta.</li>
-        <li><b>14 days free when it launches.</b> No card needed to keep trying the paid version during that window.</li>
-        <li><b>Offline either way.</b> The paid licence is a signed key with an expiry date, checked on your own machine; Janii still never needs the internet to run.</li>
-        <li><b>Beta testers get the first month free.</b> Anyone who ran the beta on a real wedding and sent feedback gets one month of the paid version at no charge, the owner's decision, not a limited-time trick.</li>
+        <li><b>No subscription, no licence key.</b> An earlier version of this page announced a paid plan after the beta. That plan is withdrawn.</li>
+        <li><b>Open source.</b> The source code will be published, so anyone can read, build and change it.</li>
+        <li><b>Offline either way.</b> Janii never needs the internet to run.</li>
       </ul>
-
-      <div class="ask r d3" style="margin-top:26px;">
-        <p><b>Want first pick when pricing goes live?</b> Say so now, no obligation, no payment today.</p>
-        <button class="btn btn-line" id="license-btn" data-umami-event="licence_interest" type="button">I would buy a licence</button>
-        <p id="license-thanks" hidden>Thank you. Noted.</p>
-      </div>
 
       <div class="pro-objections r d4">
         <p class="objections-label">Before you download</p>
@@ -255,11 +247,11 @@
         </details>
         <details>
           <summary>Is there anything to cancel right now?</summary>
-          <p>No. The beta has no account, no card and no obligation. Once the paid subscription above launches, it cancels anytime, the same as ARLing's other tools.</p>
+          <p>No. There is no account, no card and no subscription, now or after the beta.</p>
         </details>
         <details>
           <summary>What is actually free?</summary>
-          <p>The beta itself, in full, for as long as the beta programme runs: no feature is cut down for it, and no card or account is needed to download and run it.</p>
+          <p>All of it. The beta in full, with no feature cut down and no card or account needed, and Janii after the beta too: it will be open source and free.</p>
         </details>
       </div>
     </div>
@@ -363,7 +355,7 @@
         <details><summary>Why CPU only?</summary><p>The engine (rawpy, OpenCV, NumPy) has no GPU code path yet, so it runs on whatever CPU is already in your laptop, with no graphics card or driver setup required. The cost is time: a first pass over a big wedding can run for hours, not minutes, and there is no published benchmark yet.</p></details>
         <details><summary>What is story vs memories?</summary><p>The story is the best photographs that also cover the day: a fixed target count, seeded first, with no padding to reach it. The memories is the story plus enough more that nobody who was actually there is left with zero photographs; that "nobody missing" guarantee belongs to the memories, not the story.</p></details>
         <details><summary>Can I edit the selection?</summary><p>Yes. Every tag Janii puts on a frame, in the story, only shot once, already covered, is a starting position, not a verdict. Star, flag or reject any photograph the way you would in Lightroom, and delivery writes XMP sidecars or a gallery from your decisions, not Janii's.</p></details>
-        <details><summary>How do I send feedback?</summary><p>Write to <a href="mailto:andrej@arling.sk" data-umami-event="contact-email">andrej@arling.sk</a> with roughly how many RAW files you ran, which camera, and what looked wrong. Anyone who runs the beta on a real wedding and sends feedback gets the first month of the paid version free once it launches (see Price after the beta above).</p></details>
+        <details><summary>How do I send feedback?</summary><p>Write to <a href="mailto:andrej@arling.sk" data-umami-event="contact-email">andrej@arling.sk</a> with roughly how many RAW files you ran, which camera, and what looked wrong. Janii will be open source and free, so there is no paid version to earn or unlock.</p></details>
       </div>
     </div>
   </section>
@@ -376,7 +368,7 @@
       <div class="r d1">
         <p>Janii je desktopová aplikácia pre svadobných fotografov: prezrie priečinok s RAW a JPEG fotkami z jednej svadby, zoskupí ich do momentov a navrhne dve vrstvy výberu. Príbeh (story) sú najlepšie zábery, ktoré zároveň pokrývajú celý deň, na úrovni päťsto z päťtisíc, bez dopĺňania na počet. Spomienky (memories) sú príbeh plus toľko navyše, aby nikto skutočne prítomný neostal bez jedinej fotky. Pri každom zábere je dôvod: poslať tento, potrebuje váš pohľad, už pokryté, alebo jediný záber tejto chvíle. Beží celé na vašom počítači, offline, nič sa nikam neposiela, a Janii fotky nikdy nekopíruje, nepremenúva ani nemaže.</p>
         <p>Čo appka zatiaľ nevie: vyrovnanie horizontu, orezanie ani farebný grading (beta je len výber, dokončenie ide cez Lightroom, Capture One alebo Bridge ako doteraz). Beží len na Windows a len na CPU: prvý prechod väčšou svadbou (niekoľko tisíc RAW súborov) môže trvať aj hodiny. Rozpoznávanie tvárí ešte nie je zapojené, kvôli nedoriešenej právnej otázke okolo identifikácie osôb (GDPR čl. 9), nie technicky.</p>
-        <p>Beta je zadarmo, bez časového obmedzenia. Po skončení bety bude appka na predplatné: 9&nbsp;€ mesačne alebo 79&nbsp;€ ročne, prvých 14 dní zadarmo, rovnako ako pri ostatných platených nástrojoch ARLing. Appka ostáva offline aj potom, licenčný kľúč s platnosťou sa overuje bez internetu. Fotografi, ktorí appku vyskúšajú na reálnej svadbe počas bety a pošlú spätnú väzbu, dostanú prvý mesiac platenej verzie zadarmo. Napíšte na <a href="mailto:andrej@arling.sk" data-umami-event="contact-email">andrej@arling.sk</a> s tým, na koľkých RAW súboroch ste to skúsili a čo nesedelo.</p>
+        <p>Janii bude open source a zadarmo. Beta je zadarmo, bez časového obmedzenia, a platená verzia ani predplatné sa po nej neplánujú. Appka beží offline a nepotrebuje účet ani licenčný kľúč. Spätnú väzbu pošlite na <a href="mailto:andrej@arling.sk" data-umami-event="contact-email">andrej@arling.sk</a> s tým, na koľkých RAW súboroch ste to skúsili a čo nesedelo.</p>
         <div class="cta" style="margin-top:24px"><a class="btn btn-solid" href="#download" data-umami-event="download-jump" data-umami-event-place="sk">Stiahnuť betu</a><a class="btn btn-line" href="docs/" data-umami-event="open-docs">Návod</a></div>
       </div>
     </div>
