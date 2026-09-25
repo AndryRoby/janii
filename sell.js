@@ -4,7 +4,9 @@
  * Paper Sell shared bits for this page: a privacy-safe "someone clicked the
  * main CTA" beacon to the owner, the mobile sticky download bar (shows after
  * the hero, closable, remembered for the tab via sessionStorage), and the
- * "I would buy a licence" interest button in the Price section.
+ * "I would buy a licence" interest button. That button was removed from the
+ * page on 25. 9. 2026 (Janii goes open source and free, no paid version); the
+ * handler below does nothing when the button is missing.
  *
  * This page's CSP (see the meta tag in index.html) has no 'unsafe-inline' in
  * script-src, so this logic lives in its own small file instead of inline

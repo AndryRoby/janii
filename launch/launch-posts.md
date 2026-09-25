@@ -6,7 +6,7 @@ Researched 2026-09-06 with live web search and page fetches (sources linked belo
 
 - **What Janii is, in one line:** a free, offline Windows beta that reads a folder of RAW/JPEG wedding photographs, groups them into moments, and proposes a story (best-of, covers the day) and memories (story plus enough more that nobody present is missing), with a stated reason per frame.
 - **What it is not, yet:** no straighten/crop/grade, Windows only, CPU only (a big wedding can take hours), no face recognition (legal, not technical, blocker), beta.
-- **Price:** free during the beta. After the beta, one-time licence 169 EUR; first ten photographers who send feedback during the beta get first offer on it.
+- **Price:** free. Janii will be open source and free; no paid licence is planned (Andrej, 25. 9. 2026: "janii kľudne", ops/ai/rozhodnutia.md:576).
 - **Download:** https://github.com/AndryRoby/janii/releases/latest (~130 MB ZIP).
 - **Landing page:** https://arling.sk/janii/ · **Docs:** https://arling.sk/janii/docs/
 - **Contact for feedback:** andrej@arling.sk
