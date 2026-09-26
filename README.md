@@ -77,14 +77,14 @@ Janii the application never opens a network connection; every photograph stays o
 
 ## Report a problem
 
-Found something broken on this page, a download link that fails, or a bug in the app itself? Open an issue at https://github.com/AndryRoby/janii/issues, or write to andrej@arling.sk. For an app bug, include roughly how many RAW files you ran, which camera(s) shot them, and what you expected versus what happened; a screenshot helps.
+Found something broken on this page, a download link that fails, or a bug in the app itself? Open an issue at https://github.com/AndryRoby/janii/issues, or write to support@arling.sk. For an app bug, include roughly how many RAW files you ran, which camera(s) shot them, and what you expected versus what happened; a screenshot helps.
 
 ## License
 
-All rights reserved, © 2026 ARLing s. r. o. (Bratislava, Slovakia), for this landing page and for Janii itself. The hosted site and the compiled beta build are free to use, for any purpose, at no cost. Reading this repository's files is reading the entire site, and that's fine, learn from it. Rehosting this page, repackaging Janii's build as your own, or using the Janii or ARLing name for your own project is not; for anything else, write to andrej@arling.sk.
+All rights reserved, © 2026 ARLing s. r. o. (Bratislava, Slovakia), for this landing page and for Janii itself. The hosted site and the compiled beta build are free to use, for any purpose, at no cost. Reading this repository's files is reading the entire site, and that's fine, learn from it. Rehosting this page, repackaging Janii's build as your own, or using the Janii or ARLing name for your own project is not; for anything else, write to support@arling.sk.
 
 ---
 
-ARLing s. r. o., Bratislava, Slovakia. andrej@arling.sk
+ARLing s. r. o., Bratislava, Slovakia. support@arling.sk
 
 Hub and sibling tools: https://arling.sk/ · https://arling.sk/bookapp/
