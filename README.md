@@ -1,5 +1,9 @@
 # Janii
 
+**Archived experiment (27 Sep 2026).** No support, no further development, not for client work. The source code has not been published. The beta ZIP (built 4 Sep 2026) stays in Releases for existing users; it includes the Python engine as of 4 Sep 2026, under the same all-rights-reserved terms, and does not include later changes. On one wedding, against one person's picks made as the client (a wedding Janii was tuned on), it matched 44.4 % of the picks, against 43.8 % by sharpness alone and 39.9 % by chance.
+
+What follows describes the beta as it was.
+
 A free, offline Windows app for wedding photographers: it reads a folder of RAW and JPEG photographs from a shoot, groups them into moments, and proposes the story and the memories, with a reason for every frame.
 
 Live: https://arling.sk/janii/

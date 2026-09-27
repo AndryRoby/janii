@@ -22,4 +22,3 @@ Allow: /
 User-agent: Applebot
 Allow: /
 
-Sitemap: https://arling.sk/janii/sitemap.xml
