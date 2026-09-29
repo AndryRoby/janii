@@ -11,6 +11,24 @@
  */
 document.documentElement.classList.add('js');
 
+/* Zväčšený text (paper v3 pokus 4): Firefox „Zväčšiť len text“ zdvojí aj písmo v px. Sonda so 100 px to prezradí
+   (počítaná veľkosť nad 110 px) a trieda v3-text uvoľní tlačidlám pevnú výšku, aby sa zalomený text zmestil.
+   Pri bežnej veľkosti trieda nevznikne a nič sa nemení. */
+(function () {
+  function zmeraj() {
+    try {
+      var sonda = document.createElement('i');
+      sonda.style.cssText = 'position:absolute;visibility:hidden;font-size:100px';
+      document.documentElement.appendChild(sonda);
+      var velky = parseFloat(getComputedStyle(sonda).fontSize) > 110;
+      sonda.parentNode.removeChild(sonda);
+      document.documentElement.classList.toggle('v3-text', velky);
+    } catch (e) {}
+  }
+  zmeraj();
+  window.addEventListener('resize', zmeraj);
+})();
+
 /* A-093: hlavička podstránok podľa úvodu v4. Bez JS je menu čisté details,
    ktoré sa otvára kliknutím. Tento blok drží jazyk značky (arling_hub_lang),
    prekladá lištu, keď aplikácia zmení <html lang>, a dáva menu rovnaké správanie
@@ -114,7 +132,8 @@ document.documentElement.classList.add('js');
     // kurzora inam, a zatvárajú po 180 ms, aby sa dalo prejsť zo slova na panel.
     // Na mobilnej šírke a na dotyku sa menu otvára len kliknutím.
     var jemne = window.matchMedia('(hover: hover) and (pointer: fine)');
-    var siroke = window.matchMedia('(min-width: 761px)');
+    // V em ako zlom hlavičky v paper.css: pri dvojnásobnom texte prejde hlavička na mobilnú už pri 1 522 px.
+    var siroke = window.matchMedia('(min-width: 47.5625em)');
     var cas = null, prejdenim = 0;
     menu.addEventListener('pointerenter', function () {
       if (!jemne.matches || !siroke.matches) return;
@@ -144,15 +163,17 @@ document.documentElement.classList.add('js');
     // postavil obal; tri jeho preklady by tento súbor zväčšili na každej stránke.
     var texty = {
       sk: { menu:'Menu', produkty:'Produkty', domov:'ARLing: úvod', nav:'Hlavná navigácia', stranka:'Na tejto stránke', skip:'Prejsť na obsah', cta:'Skontrolovať e-faktúru zadarmo', nazvy:['Nástroje','Piloty','Návody','O firme'] },
-      en: { menu:'Menu', produkty:'Products', domov:'ARLing home', nav:'Main navigation', stranka:'On this page', skip:'Skip to content', cta:'Shop', nazvy:['Tools','Pilots','Guides','Company'] },
-      de: { menu:'Menü', produkty:'Produkte', domov:'ARLing Startseite', nav:'Hauptnavigation', stranka:'Auf dieser Seite', skip:'Zum Inhalt springen', cta:'E-Rechnung kostenlos prüfen', nazvy:['Werkzeuge','Piloten','Anleitungen','Unternehmen'] },
-      cs: { menu:'Menu', produkty:'Produkty', domov:'ARLing: úvod', nav:'Hlavní navigace', stranka:'Na této stránce', skip:'Přejít na obsah', cta:'Zkontrolovat e-fakturu zdarma', nazvy:['Nástroje','Piloty','Návody','O firme'] }
+      // „Piloten“ znamená pilotov lietadiel a „Pilots“ je nejasné (audit jazykov 29. 9. 2026); čeština má vlastné názvy.
+      en: { menu:'Menu', produkty:'Products', domov:'ARLing home', nav:'Main navigation', stranka:'On this page', skip:'Skip to content', cta:'Shop', nazvy:['Tools','Pilot programs','Guides','Company'] },
+      de: { menu:'Menü', produkty:'Produkte', domov:'ARLing Startseite', nav:'Hauptnavigation', stranka:'Auf dieser Seite', skip:'Zum Inhalt springen', cta:'E-Rechnung kostenlos prüfen', nazvy:['Werkzeuge','Pilotprojekte','Anleitungen','Unternehmen'] },
+      cs: { menu:'Menu', produkty:'Produkty', domov:'ARLing: úvod', nav:'Hlavní navigace', stranka:'Na této stránce', skip:'Přejít na obsah', cta:'Zkontrolovat e-fakturu zdarma', nazvy:['Nástroje','Pilotní projekty','Návody','O firmě'] }
     };
     function jazyk() {
       var kod = (document.documentElement.lang || 'sk').slice(0,2).toLowerCase();
       var t = texty[kod] || texty.sk;
       var cast = kod === 'en' || kod === 'de' ? kod + '/' : '';
-      var cesty = ['/'+cast+'#nastroje', '/'+cast+'#piloty', '/notes/'+cast, '/how-we-work/'+cast];
+      // Čeština nemá úvod ani /how-we-work/cs/, ale má /notes/cs/ (obal.mjs NAV_CS).
+      var cesty = ['/'+cast+'#nastroje', '/'+cast+'#piloty', '/notes/'+(kod === 'cs' ? 'cs/' : cast), '/how-we-work/'+cast];
       // Tlačidlo vedie na produkt s cenou v jazyku stránky (obal.mjs CTA, 25. 9. 2026), nie na Proof.
       var proof = kod === 'en' ? '/shop/' : kod === 'de' ? '/efaktura/de/' : kod === 'cs' ? '/efaktura/cs/' : '/efaktura/';
       hlavicka.querySelectorAll('[data-site-nav]').forEach(function (a) {
